@@ -1,29 +1,23 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Button, InputGroup, Card, FormControl }  from 'react-bootstrap'
+import { Button, InputGroup, Card, FormControl, CardColumns }  from 'react-bootstrap'
 import styled from 'styled-components'
 import giphy from '/Users/denis/Documents/projects/giphysearch/src/Giphy.js'
 
 
-const Main = styled.div`
+const Container = styled.div`
   display: flex;
   justify-content: center;
   margin: 25px;
   align-items: center;
 `
-const StyledCard = styled(Card)`
-  width: 100%;
-  heigth: 100%; 
-  height: 100%; 
+const Block = styled(Card)`
   display: flex;
+  width: 100%; 
+  padding: 25px;
   flex-direction: column; 
 `
-const Grid = styled.div`
-  display: flex; 
-  justify-content: center; 
-  margin: 25px;
-  align-items: center;
-`
+
 const Body = styled.div`
   display: flex;
   justify-content: center; 
@@ -51,11 +45,10 @@ class App extends Component {
   }
 
   render() {
-    const { results } = this.state
-    console.log("-----results in render---->", results)
+    const { results = [] } = this.state
     return (
-      <Main>
-        <StyledCard>
+      <Container>
+        <Block>
           <Body>
             <InputGroup onChange={this.myChangeHandler} className="mb-3" style={{ width: '50%' }} >
               <FormControl
@@ -68,9 +61,20 @@ class App extends Component {
               </InputGroup.Append>
             </InputGroup>
           </Body>
-          {results && results.length > 0 && <Grid>giphyList...</Grid>}
-        </StyledCard>
-      </Main>
+          {results.length > 0 && 
+            <CardColumns>
+              {results.map(({ id, title, url, images: {downsized: {url: urlGif}} }) => 
+                <Card key={id}>
+                  <Card.Img variant="top" src={urlGif}/>
+                  <Card.Body>
+                    <Card.Title><a href={url}>{title}</a></Card.Title>
+                  </Card.Body>
+                </Card>
+              )}
+            </CardColumns>
+          }
+        </Block>
+      </Container>
     )
   }
 }
