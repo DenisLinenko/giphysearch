@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Button, Card, InputGroup, FormControl }  from 'react-bootstrap'
+import { Button, InputGroup, Card, FormControl }  from 'react-bootstrap'
 import styled from 'styled-components'
+import giphy from '/Users/denis/Documents/projects/giphysearch/src/Giphy.js'
 
 
 const Main = styled.div`
@@ -10,8 +11,9 @@ const Main = styled.div`
   margin: 25px;
   align-items: center;
 `
-const StyledCard = styled('Card')`
-  width: 100%; 
+const StyledCard = styled(Card)`
+  width: 100%;
+  heigth: 100%; 
   height: 100%; 
   display: flex;
   flex-direction: column; 
@@ -41,15 +43,16 @@ class App extends Component {
     this.setState({search: event.target.value});
   }
 
-  handleClick = () => {
-    console.log("------handleClick-----", this.state.search)
-    let data = [1, 2, 3]
+  handleClick = async() => {
+    const { data } = await giphy({
+      search: this.state.search,
+    })
     this.setState({results: data})
   }
 
   render() {
-    const { search, results } = this.state
-    console.log("-----search---->", search)
+    const { results } = this.state
+    console.log("-----results in render---->", results)
     return (
       <Main>
         <StyledCard>
