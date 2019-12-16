@@ -1,21 +1,23 @@
+const API_KEY = 'YmIWrFS6dSzm1zrWFhwSuIf6mVakhl2S'
+const LIMIT = 12
 
 const giphy = async ({ search }) => {
   try {
-    const data = search.trim().replace(/\s/ig, '+');
-    const path = `http://api.giphy.com/v1/gifs/search?q=${data}&api_key=YmIWrFS6dSzm1zrWFhwSuIf6mVakhl2S&limit=12`;
-
+    const path = `https://api.giphy.com/v1/gifs/search?q=${encodeURIComponent(
+      search
+    )}&api_key=${API_KEY}&limit=${LIMIT}`
     const response = await fetch(path, {
       method: 'GET',
-    });
-    if (response.status >= 300) {
-      console.error('error in Giphy. status error: ', response.status);
-    } else {
-      return await response.json();
-    }
-  } catch (error) {
-    console.error('unexpected error occurred while getting data', error.stack);
-  }
-  return { data: [] };
-};
+    })
 
-export default giphy;
+    if (response.ok) {
+      return await response.json()
+    }
+    console.error('unable to search due to', response)
+  } catch (error) {
+    console.error('unexpected error occurred while getting data', error.stack)
+  }
+  return { data: [] }
+}
+
+export default giphy

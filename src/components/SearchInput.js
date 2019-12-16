@@ -1,40 +1,43 @@
-import React, { useState } from 'react';
-import '../App.css';
-import styled from 'styled-components';
-import { Button, InputGroup, FormControl } from 'react-bootstrap';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import { Button, InputGroup, FormControl, Spinner } from 'react-bootstrap'
+import PropTypes from 'prop-types'
 
-
-const Body = styled.div`
+const Container = styled.div`
   display: flex;
-  justify-content: center; 
-  margin: 25px;
-  width: 50%;
+  justify-content: center;
   align-items: center;
-`;
+  margin: 25px;
+`
 
-const SearchInput = ({ handleSearch }) => {
-  const [search, setSearch] = useState('');
+const SearchInput = ({ handleSearch, loading }) => {
+  const [search, setSearch] = useState('')
+
   const onChange = (event) => {
-    setSearch(event.target.value);
-  };
+    setSearch(event.target.value)
+  }
+
   const onClick = () => {
-    handleSearch(search);
-  };
+    handleSearch(search)
+  }
 
   return (
-    <Body>
+    <Container>
       <InputGroup>
         <FormControl placeholder="Search..." onChange={onChange} />
         <InputGroup.Append>
-          <Button onClick={onClick} disabled={search === ''} variant="primary">Search</Button>
+          <Button onClick={onClick} disabled={search === ''} variant="primary">
+            {loading && <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />}
+            Search
+          </Button>
         </InputGroup.Append>
       </InputGroup>
-    </Body>
-  );
-};
+    </Container>
+  )
+}
 
 SearchInput.propTypes = {
   handleSearch: PropTypes.func.isRequired,
-};
-export default SearchInput;
+  loading: PropTypes.bool.isRequired,
+}
+export default SearchInput
