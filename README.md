@@ -4,6 +4,6 @@
 
 Execute `npm install` to download dependencies
 
-## To running
+## To run
 
 `npm start` to run application
